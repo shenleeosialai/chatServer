@@ -27,4 +27,14 @@
     chatSocket.onclose = function(event) {
         console.error('Chat socket closed unexpectedly');
     };
+    const input = document.getElementById('chat-message-input');
+    const submitButton = document.getElementById('chat-message-submit');
+    submitButton.addEventListner('click',function(event) {
+        const message = input.value;
+        if(message) {
+            chatSocket.send(JSON.stringify({'message' : message}));
+            input.value = '';
+            input.focus();
+        }
+    });
 {% endblock %}
