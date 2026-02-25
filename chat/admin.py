@@ -8,4 +8,4 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ['sent_on', 'user', 'content']
     list_filter = ['sent_on']
     search_fields = ['content']
-    raw_id_fields = ['user', 'content']
+    raw_id_fields = ['user']
