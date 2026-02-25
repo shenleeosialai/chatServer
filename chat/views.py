@@ -13,9 +13,12 @@ def chat_room(request, user_id):
         return HttpResponse("User not found.", status=404)
     
     sender = request.user
+    latest_messages = reciever.chat_messages.select_related('user').order_by('-id')[:]
+    latest_messages = reversed(latest_messages)
     
     return render(request,
                   'chat/room.html',
                   {'reciever': reciever,
-                   'sender': sender})
+                   'sender': sender,
+                   'latest_messages': latest_messages})
     
