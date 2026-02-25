@@ -1,9 +1,16 @@
 import json
 from django.utils import timezone
 from channels.generic.websocket import AsyncWebsocketConsumer
+from chat.models import Message
 
 
-class ChatConsumer(AsyncWebsocketConsumer):    
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def persist_message(self, message):
+        await Message.objects.acreate(
+            user=self.user,
+            content=message,
+            user_id=self.id
+        )
     async def connect(self):
         self.user = self.scope['user']
         self.id = self.scope['url_route']['kwargs']['user_id']
@@ -36,6 +43,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 
             }
         )
+        await self.persist_message(message)
     
     # Receive message from room group
     async def chat_message(self, event):
